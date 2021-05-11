@@ -50,12 +50,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getNotificationBuilder() : NotificationCompat.Builder {
+        //Notification 클릭 했을 때 Intent 시작
+        val notificationIntent = Intent(this, MainActivity::class.java)
+        //Notification을 감싸고 전달해주는 PendingIntent 정의
+        val notificationPendingIntent = PendingIntent.getActivity(this, NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        //Builder 생성
         val notifiyBuilder = NotificationCompat.Builder(this, PRIMARY_CHANNEL_ID)
             .apply {
                 setContentTitle("Notification Title")
                 setContentText("Notification Text")
                 setSmallIcon(R.drawable.ic_launcher_foreground)
-            }
+                setContentIntent(notificationPendingIntent) //Builder에 Intent 적용
+                setAutoCancel(true) //Notification 클릭하면 자동 삭제제
+           }
 
         return notifiyBuilder
     }
